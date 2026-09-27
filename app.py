@@ -1,18 +1,22 @@
-from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
-from flask_migrate import Migrate
+from flask import Flask, render_template, request
+import ollama
 
-db = SQLAlchemy()
+app = Flask(__name__)
 
+@app.route('/')
+def jarvis_template():
+    return render_template("index.html")
 
-def create_app():
-    app = Flask(__name__, template_folder='templates')
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///./testdb.db'
+@app.route('/prompt')
+def model():
+    prompt = request.form.get('prompt')
+    response = ollama.chat(model='gemma4:31b-cloud', messages=[
+        {
+            'role': 'user',
+            'content': f'{prompt}',
+        },
+    ])
+    return(response['message']['content'])
 
-    db.init_app(app)
-
-    # Imports later on
-
-    migrate = Migrate(app, db)
-
-    return app
+if __name__ == 'main':
+    app.run(debug=True)
