@@ -6,11 +6,34 @@
     </head>
     <body>
         <h1>Jarvis Demo</h1>
-        <form action="/prompt" method="GET">
+        <form id="promptForm">
             <label for="prompt">Enter your Prompt:</label><br>
             <input type="text" id="prompt" name="prompt"><br>
             <button type="submit">Submit</button>
         </form>
+        <div id="chatbox"></div>
+        <script>
+            document.addEventListener("DOMContentLoaded", () => {
+                console.log("DOM fully loaded");
+            });
+
+            const form = document.querySelector("#promptForm");
+
+            form.addEventListener("submit", async function (e){
+                e.preventDefault();
+
+                const formData = new FormData(form);
+
+                const response =  await fetch("/prompt", {
+                    method: "POST",
+                    body: formData
+                });
+                const data = await response.text();
+
+                document.querySelector("#chatbox").textContent = data;
+            });
+
+        </script>
     </body>
 
 </html>

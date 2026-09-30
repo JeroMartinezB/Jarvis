@@ -7,7 +7,7 @@ app = Flask(__name__)
 def jarvis_template():
     return render_template("index.html")
 
-@app.route('/prompt')
+@app.route('/prompt', methods=['POST'])
 def model():
     prompt = request.form.get('prompt')
     response = ollama.chat(model='gemma4:31b-cloud', messages=[
