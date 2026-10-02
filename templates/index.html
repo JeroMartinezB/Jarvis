@@ -6,33 +6,73 @@
     </head>
     <body>
         <h1>Jarvis Demo</h1>
-        <form id="promptForm">
-            <label for="prompt">Enter your Prompt:</label><br>
-            <input type="text" id="prompt" name="prompt"><br>
-            <button type="submit">Submit</button>
-        </form>
+        <button id="startButton">Start Listening</button>
+        <button id="stopButton">Stop</button>
+        <p id="output">Your transcript shows here....</p>
         <div id="chatbox"></div>
+
         <script>
-            document.addEventListener("DOMContentLoaded", () => {
-                console.log("DOM fully loaded");
-            });
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 
-            const form = document.querySelector("#promptForm");
+            if (!SpeechRecognition) {
+                alert("Your browser does not support the API");
+            } else {
+                const recognition = new SpeechRecognition();
+            
 
-            form.addEventListener("submit", async function (e){
-                e.preventDefault();
+                // Config
+                recognition.continuous = true;
+                recognition.interimResults = true;
+                recognition.lang = 'en-US';
 
-                const formData = new FormData(form);
+                const startButton = document.querySelector('#startButton');
+                const stopButton = document.querySelector('#stopButton');
+                const output = document.querySelector('#output');
 
-                const response =  await fetch("/prompt", {
-                    method: "POST",
-                    body: formData
+                startButton.addEventListener('click', () => {
+                    recognition.start();
+                    output.innerText = "Listening";
                 });
-                const data = await response.text();
 
-                document.querySelector("#chatbox").textContent = data;
-            });
+                stopButton.addEventListener('click', () => {
+                    recognition.stop();
+                });
 
+                // Handle the transcription
+                let prompt = '';
+
+                recognition.onresult = (event) => {
+
+                    let finalTranscript = '';
+
+                    // Loop through
+                    for (let i = event.resultIndex; i < event.results.length; i++) {
+                        const transcript = event.results[i][0].transcript;
+                        if (event.results[i].isFinal) {
+                            //prompt += transcript + ' ';
+                            finalTranscript += transcript + ' ';
+                        }
+                        
+                    }
+
+                    if (finalTranscript) {
+                        prompt = finalTranscript;
+                        output.innerText = finalTranscript;
+                    }
+                };
+                recognition.onerror = (event) => {
+                    console.error("Speech recognition error", event.error);
+                };
+                console.log(prompt);
+                stopButton.addEventListener("click", async function() {
+                    const response = await fetch("/prompt", {
+                        method: "POST",
+                        body: prompt
+                    });
+                    const data = await response.text();
+                    document.querySelector('#chatbox').textContent = data;
+                });
+            }
         </script>
     </body>
 

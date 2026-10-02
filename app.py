@@ -9,7 +9,7 @@ def jarvis_template():
 
 @app.route('/prompt', methods=['POST'])
 def model():
-    prompt = request.form.get('prompt')
+    prompt = request.data.decode('utf-8')
     response = ollama.chat(model='gemma4:31b-cloud', messages=[
         {
             'role': 'user',
