@@ -71,13 +71,13 @@ function customVoice (text) {
 
         if (selectedVoice) {
             speech.voice = selectedVoice;
+            speech.rate = 1.27;
         }
 
         window.speechSynthesis.speak(speech);
     }
 
     const voices = window.speechSynthesis.getVoices();
-    console.log(voices);
 
     if (voices.length > 0) {
         setVoice();
