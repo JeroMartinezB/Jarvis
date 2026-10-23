@@ -49,15 +49,43 @@ const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecogni
         recognition.onerror = (event) => {
             console.error("Speech recognition error", event.error);
         };
-        console.log(prompt);
         stopButton.addEventListener("click", async function() {
             const response = await fetch("/prompt", {
                 method: "POST",
                 body: prompt
             });
+
             const data = await response.text();
-            const speech = new SpeechSynthesisUtterance(data);
-            window.speechSynthesis.speak(speech);
+            customVoice(data);
+            
             document.querySelector('#chatbox').textContent = data;
         });
     }
+
+function customVoice (text) {
+    const speech = new SpeechSynthesisUtterance(text);
+
+    function setVoice() {
+        const voices = window.speechSynthesis.getVoices();
+        const selectedVoice = voices.find(voice => voice.name === 'Google UK English Male');
+
+        if (selectedVoice) {
+            speech.voice = selectedVoice;
+        }
+
+        window.speechSynthesis.speak(speech);
+    }
+
+    const voices = window.speechSynthesis.getVoices();
+    console.log(voices);
+
+    if (voices.length > 0) {
+        setVoice();
+    } else {
+        window.speechSynthesis.addEventListener(
+            'voiceschanged',
+            setVoice,
+            { once: true}
+        );
+    }
+}
