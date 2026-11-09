@@ -21,7 +21,7 @@ def model():
     ])
 
     # TODO there's a problem when reading the process, it is not getting to this if
-    if str(process).lower() == 'weather':
+    if process['message']['content'] == 'weather':
         data = jarvis_weather()
         weather_prompt = weather_helper(data)
         response = ollama.chat(model='gemma4:31b-cloud', messages=[

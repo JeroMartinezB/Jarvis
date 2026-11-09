@@ -48,5 +48,6 @@ def jarvis_weather():
     hourly_data["precipitation"] = hourly_precipitation
 
     hourly_dataframe = pd.DataFrame(data = hourly_data)
-    print("\nHourly data\n", hourly_dataframe)
-    return "\nHourly data\n", hourly_dataframe
+    hourly_string = hourly_dataframe.to_string()
+    #print("\nHourly data\n", hourly_dataframe)
+    return hourly_string
