@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request
-from src.jarvis_helper import prompt_helper
+from src.jarvis_helper import prompt_helper, weather_helper
+from src.api.weather_api import jarvis_weather
 import ollama
 
 app = Flask(__name__)
@@ -12,13 +13,27 @@ def jarvis_template():
 def model():
     prompt = request.data.decode('utf-8')
     jarvis_prompt = prompt_helper(prompt)
-    response = ollama.chat(model='gemma4:31b-cloud', messages=[
+    process = ollama.chat(model='gemma4:31b-cloud', messages=[
         {
             'role': 'user',
             'content': f'{jarvis_prompt}',
         },
     ])
-    return(response['message']['content'])
+
+    # TODO there's a problem when reading the process, it is not getting to this if
+    if str(process).lower() == 'weather':
+        data = jarvis_weather()
+        weather_prompt = weather_helper(data)
+        response = ollama.chat(model='gemma4:31b-cloud', messages=[
+            {
+                'role': 'user',
+                'content': f'{weather_prompt}',
+            },
+        ])
+
+        return(response['message']['content'])
+    else:
+        return(process['message']['content'])
 
 if __name__ == 'main':
     app.run(debug=True)
