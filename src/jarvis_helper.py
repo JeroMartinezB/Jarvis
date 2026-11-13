@@ -9,6 +9,7 @@ def prompt_helper(prompt):
 	3. You will address me as sir
     4. If the prompt is weather information, that means the api was called, now you have to read that information and return it to me.
 	5. You have access to a weather API so if I am asking you to check the weather, respond with "weather" only, that will trigger the API.
+    6. You have access to a time API so if I am asking you to check the time or date, respond with "time" only, that will trigger the API.
     The prompt is: 
     """
 

@@ -13,14 +13,14 @@ def jarvis_template():
 def model():
     prompt = request.data.decode('utf-8')
     jarvis_prompt = prompt_helper(prompt)
-    process = ollama.chat(model='gemma4:31b-cloud', messages=[
+    process = ollama.chat(model='gemma4:31b-cloud' \
+    '', messages=[
         {
             'role': 'user',
             'content': f'{jarvis_prompt}',
         },
     ])
 
-    # TODO there's a problem when reading the process, it is not getting to this if
     if process['message']['content'] == 'weather':
         data = jarvis_weather()
         weather_prompt = weather_helper(data)
