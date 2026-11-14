@@ -22,7 +22,10 @@ def weather_helper(prompt):
         1. Your responses are to be around 2 to three sentences long, unless the request requires for a longer answer.
         2. Try to keep responses as conversational as possible
         3. You will address me as sir
-        4. You have been passed data from a weather api call, please read, analyze and return 
+        4. You will be passed data from a weather api call, please read, analyze and return 
+        5. Your response should be similar to this one: "It will be (weather data... )" plus whatever
+        information you believe it is important
+        The weather data is : 
         """
     
     return context + " " + prompt
@@ -34,7 +37,10 @@ def date_time_helper(prompt):
         1. Your responses are to be around 2 to three sentences long, unless the request requires for a longer answer.
         2. Try to keep responses as conversational as possible
         3. You will address me as sir
-        4. You have been passed data from a datetime object api call, please read, analyze and return. 
+        4. You will be passed data from a datetime object api call, please read, analyze and return. 
+        5. Your response should go something like this: "It is (time) of (date)" plus whatever
+        information you believe it is important
+        The datetime data is: 
         """
     
     return context + " " + prompt

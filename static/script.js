@@ -1,66 +1,98 @@
-const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+let speechMode = true;
+const modeButton = document.querySelector('#modeButton');
+const container = document.querySelector('#mode');
+container.innerHTML = '<button id="startButton">Start Listening</button><button id="stopButton">Stop</button>';
+modeButton.addEventListener('click', () => {
+    speechMode = !speechMode;
+    if (speechMode) {
+        console.log("Welcome to speech mode");
+        container.innerHTML = '<button id="startButton">Start Listening</button><button id="stopButton">Stop</button>';
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 
-    if (!SpeechRecognition) {
-        alert("Your browser does not support the API");
-    } else {
-        const recognition = new SpeechRecognition();
-    
+        if (!SpeechRecognition) {
+            alert("Your browser does not support the API");
+        } else {
+            const recognition = new SpeechRecognition();
+        
 
-        // Config
-        recognition.continuous = true;
-        recognition.interimResults = true;
-        recognition.lang = 'en-US';
+            // Config
+            recognition.continuous = true;
+            recognition.interimResults = true;
+            recognition.lang = 'en-US';
 
-        const startButton = document.querySelector('#startButton');
-        const stopButton = document.querySelector('#stopButton');
-        const output = document.querySelector('#output');
+            const startButton = document.querySelector('#startButton');
+            const stopButton = document.querySelector('#stopButton');
+            const output = document.querySelector('#output');
 
-        startButton.addEventListener('click', () => {
-            recognition.start();
-            output.innerText = "Listening";
-        });
+            startButton.addEventListener('click', () => {
+                recognition.start();
+                output.innerText = "Listening";
+            });
 
-        stopButton.addEventListener('click', () => {
-            recognition.stop();
-        });
+            stopButton.addEventListener('click', () => {
+                recognition.stop();
+            });
 
-        // Handle the transcription
-        let prompt = '';
+            // Handle the transcription
+            let prompt = '';
 
-        recognition.onresult = (event) => {
+            recognition.onresult = (event) => {
 
-            let finalTranscript = '';
+                let finalTranscript = '';
 
-            // Loop through
-            for (let i = event.resultIndex; i < event.results.length; i++) {
-                const transcript = event.results[i][0].transcript;
-                if (event.results[i].isFinal) {
-                    //prompt += transcript + ' ';
-                    finalTranscript += transcript + ' ';
+                // Loop through
+                for (let i = event.resultIndex; i < event.results.length; i++) {
+                    const transcript = event.results[i][0].transcript;
+                    if (event.results[i].isFinal) {
+                        //prompt += transcript + ' ';
+                        finalTranscript += transcript + ' ';
+                    }
+                    
                 }
-                
-            }
 
-            if (finalTranscript) {
-                prompt = finalTranscript;
-                output.innerText = finalTranscript;
-            }
-        };
-        recognition.onerror = (event) => {
-            console.error("Speech recognition error", event.error);
-        };
-        stopButton.addEventListener("click", async function() {
+                if (finalTranscript) {
+                    prompt = finalTranscript;
+                    output.innerText = finalTranscript;
+                }
+            };
+            recognition.onerror = (event) => {
+                console.error("Speech recognition error", event.error);
+            };
+            stopButton.addEventListener("click", async function() {
+                const response = await fetch("/prompt", {
+                    method: "POST",
+                    body: prompt
+                });
+
+                const data = await response.text();
+                customVoice(data);
+                
+                document.querySelector('#chatbox').textContent = data;
+            });
+        }
+    } else {
+        console.log("Welcome to chat mode");
+        container.innerHTML = '<p>Welcome to chat mode</p> <br> <textarea id="textInput"></textarea><br><button id="chatButton">Send</button>';
+
+        const textInput = document.querySelector('#textInput');
+        const chatButton = document.querySelector('#chatButton');
+
+        chatButton.addEventListener('click', async function() {
+            const prompt = textInput.value;
             const response = await fetch("/prompt", {
                 method: "POST",
                 body: prompt
             });
 
             const data = await response.text();
-            customVoice(data);
-            
             document.querySelector('#chatbox').textContent = data;
+            textInput.value = '';
         });
     }
+
+});
+
+
 
 function customVoice (text) {
     const speech = new SpeechSynthesisUtterance(text);
