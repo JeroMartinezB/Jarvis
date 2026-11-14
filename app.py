@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request
-from src.jarvis_helper import prompt_helper, weather_helper
+from src.jarvis_helper import prompt_helper, weather_helper, date_time_helper
 from src.api.weather_api import jarvis_weather
+from src.api.datetime_api import jarvis_datetime
 import ollama
 
 app = Flask(__name__)
@@ -31,6 +32,16 @@ def model():
             },
         ])
 
+        return(response['message']['content'])
+    elif process['message']['content'] == 'time':
+        data = jarvis_datetime()
+        datetime_prompt = date_time_helper(data)
+        response = ollama.chat(model='gemma4:31b-cloud', messages=[
+            {
+                'role': 'user',
+                'content': f'{datetime_prompt}',
+            },
+        ])
         return(response['message']['content'])
     else:
         return(process['message']['content'])

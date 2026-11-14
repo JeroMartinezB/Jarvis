@@ -26,3 +26,15 @@ def weather_helper(prompt):
         """
     
     return context + " " + prompt
+
+def date_time_helper(prompt):
+    context = """Your name is Jarvis and you are my personal assistant, 
+        before I pass the prompt, there are certain guidelines to follow:
+    
+        1. Your responses are to be around 2 to three sentences long, unless the request requires for a longer answer.
+        2. Try to keep responses as conversational as possible
+        3. You will address me as sir
+        4. You have been passed data from a datetime object api call, please read, analyze and return. 
+        """
+    
+    return context + " " + prompt
