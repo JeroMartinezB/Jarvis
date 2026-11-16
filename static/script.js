@@ -1,8 +1,11 @@
-let speechMode = true;
+let speechMode = false;
 const modeButton = document.querySelector('#modeButton');
 const container = document.querySelector('#mode');
 container.innerHTML = '<button id="startButton">Start Listening</button><button id="stopButton">Stop</button>';
-modeButton.addEventListener('click', () => {
+document.addEventListener('DOMContentLoaded', interaction);
+modeButton.addEventListener('click', interaction);
+
+function interaction() {
     speechMode = !speechMode;
     if (speechMode) {
         console.log("Welcome to speech mode");
@@ -89,10 +92,7 @@ modeButton.addEventListener('click', () => {
             textInput.value = '';
         });
     }
-
-});
-
-
+}
 
 function customVoice (text) {
     const speech = new SpeechSynthesisUtterance(text);

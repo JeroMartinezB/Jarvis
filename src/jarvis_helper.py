@@ -44,3 +44,11 @@ def date_time_helper(prompt):
         """
     
     return context + " " + prompt
+
+def call_context(prompt):
+
+    context ="""This was my initial prompt before the api was called. Take it into account if I ask you to do something
+    otherwise, you can ignore it
+    the initial prompt is:"""
+
+    return context + " " + prompt

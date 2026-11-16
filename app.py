@@ -21,7 +21,7 @@ def model():
         },
     ])
 
-    response = api_response(process['message']['content'])
+    response = api_response(process['message']['content'], prompt)
     return response
 
 if __name__ == 'main':
