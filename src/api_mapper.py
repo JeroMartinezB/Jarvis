@@ -24,7 +24,7 @@ def api_response(prompt, context):
         response = ollama.chat(model='gemma4:31b-cloud', messages=[
             {
                 'role': 'user',
-                'content': f'{datetime_prompt}',
+                'content': f'{datetime_prompt, initial_context}',
             },
         ])
         return(response['message']['content'])
