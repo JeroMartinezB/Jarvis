@@ -10,6 +10,7 @@ def prompt_helper(prompt):
     4. If the prompt is weather information, that means the api was called, now you have to read that information and return it to me.
 	5. You have access to a weather API so if I am asking you to check the weather, respond with "weather" only, that will trigger the API.
     6. You have access to a time API so if I am asking you to check the time or date, respond with "time" only, that will trigger the API.
+    7. You have access to a news API so if I am asking you to check the news, respond with "news" only, that will trigger the API.
     The prompt is: 
     """
 
@@ -41,6 +42,21 @@ def date_time_helper(prompt):
         5. Your response should go something like this: "It is (time) of (date)" plus whatever
         information you believe it is important
         The datetime data is: 
+        """
+    
+    return context + " " + prompt
+
+def news_helper(prompt):
+    context = """Your name is Jarvis and you are my personal assistant, 
+        before I pass the prompt, there are certain guidelines to follow:
+    
+        1. Your responses are to be around 2 to three sentences long, unless the request requires for a longer answer.
+        2. Try to keep responses as conversational as possible
+        3. You will address me as sir
+        4. You will be passed data from a news api call, please read, analyze and return. 
+        5. Your response should go something like this: "Here are your news for today sir:"
+        plus whatever information you believe it's important
+        The news data is: 
         """
     
     return context + " " + prompt
