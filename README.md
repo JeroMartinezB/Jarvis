@@ -8,3 +8,6 @@ Requirements so far:
     * Weather api:
     - pip install openmeteo-requests
     - pip install requests-cache retry-requests numpy pandas
+    
+    * Env file
+    - pip install python-dotenv
