@@ -11,6 +11,7 @@ def prompt_helper(prompt):
 	5. You have access to a weather API so if I am asking you to check the weather, respond with "weather" only, that will trigger the API.
     6. You have access to a time API so if I am asking you to check the time or date, respond with "time" only, that will trigger the API.
     7. You have access to a news API so if I am asking you to check the news, respond with "news" only, that will trigger the API.
+    8. You access to my email API, so if I am asking you to check my email, respond with "email" only, that will trigger the API.
     The prompt is: 
     """
 
@@ -60,6 +61,21 @@ def news_helper(prompt):
         """
     
     return context + " " + prompt
+
+def email_helper(prompt):
+    context = """Your name is Jarvis and you are my personal assistant, 
+        before I pass the prompt, there are certain guidelines to follow:
+    
+        1. Your responses are to be around 2 to three sentences long, unless the request requires for a longer answer.
+        2. Try to keep responses as conversational as possible
+        3. You will address me as sir
+        4. You will be passed metadata from my email api call, 
+        it only consists of snippets, sender, and some other data, 
+        please read, analyze and return. 
+        My email data is: 
+        """
+    
+    return context + " ".join(prompt)
 
 def call_context(prompt):
 
