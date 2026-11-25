@@ -11,3 +11,6 @@ Requirements so far:
     
     * Env file
     - pip install python-dotenv
+
+    Install the Google client library for Python
+    python3 -m pip install --upgrade google-api-python-client google-auth-httplib2 google-auth-oauthlib
