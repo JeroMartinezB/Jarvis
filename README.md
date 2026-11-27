@@ -3,7 +3,8 @@
 Requirements so far:
 
 - Flask and all its dependencies (including an updated version of python)
-- Ollama and the specific model --> gemma4:31b-cloud
+- Ollama downloaded to your computer and the specific model --> gemma4:31b-cloud
+    - pip install ollama
 - Install the following pip packages
     * Weather api:
     - pip install openmeteo-requests
